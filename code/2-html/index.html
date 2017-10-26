@@ -38,7 +38,10 @@
             facingMode: "environment"
         }], audio: false, video: { } };
 
-        navigator.mediaDevices.getUserMedia(constraints)
+        navigator.mediaDevices
+            .getUserMedia({
+                video: constraints
+            })
             .then(function(mediaStream) {
                 var video = document.querySelector('video');
                 video.srcObject = mediaStream;
