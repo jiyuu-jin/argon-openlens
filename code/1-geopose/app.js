@@ -59,10 +59,9 @@ loader.load('box.png', function (texture) {
     box.add(mesh);
 });
 boxGeoObject.add(box);
-
 var boxGeoEntity = new Argon.Cesium.Entity({
-    name: "Asuh Dude",
-    position: Cartesian3.fromDegrees(-76.880126, 40.258891),
+    name: "I have a box",
+    position: Cartesian3.ZERO,
     orientation: Cesium.Quaternion.IDENTITY
 });
 // the updateEvent is called each time the 3D world should be

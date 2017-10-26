@@ -78,8 +78,8 @@ loader.load('box.png', function (texture) {
 });
 boxGeoObject.add(box);
 var boxGeoEntity = new Argon.Cesium.Entity({
-    name: "I have a box",
-    position: Cartesian3.ZERO,
+    name: "Asuh Dude",
+    position: Cartesian3.fromDegrees(-76.880126, 40.258891),
     orientation: Cesium.Quaternion.IDENTITY
 });
 // Create a DIV to use to label the position and distance of the cube
