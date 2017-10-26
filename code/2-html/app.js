@@ -253,15 +253,15 @@ app.updateEvent.addEventListener(function (frame) {
             ];
         }
     }
-    infoText += " distance to Buzz box @ GT (" + toFixed(distanceToBuzz, 2) + ")<br>";
+    infoText += " distance to lit; fam @ GT (" + toFixed(distanceToBuzz, 2) + ")<br>";
     infoText += "box is " + toFixed(distanceToBox, 2) + " meters away";
     var boxLabelText;
     if (boxPoseFIXED.poseStatus & Argon.PoseStatus.KNOWN) {
-        boxLabelText = "a wooden box!<br>lla = " + toFixed(boxCartographicDeg[0], 6) + ", ";
+        boxLabelText = "suhhh dude!<br>lla = " + toFixed(boxCartographicDeg[0], 6) + ", ";
         boxLabelText += toFixed(boxCartographicDeg[1], 6) + ", " + toFixed(boxCartographicDeg[2], 2) + "";
     }
     else {
-        boxLabelText = "a wooden box!<br>Location unknown";
+        boxLabelText = "suhhhh dude!<br>Location unknown";
     }
     if (lastInfoText !== infoText) {
         locationElements[0].innerHTML = infoText;
