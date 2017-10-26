@@ -1,4 +1,5 @@
 body {
+	margin: 0;
 	font-family: Arial;
 }
 
@@ -57,4 +58,8 @@ button:active {
 
 #hud {
   pointer-events: auto;
+}
+
+#argon{
+	background-color: transparent !important;
 }

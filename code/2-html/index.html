@@ -7,8 +7,17 @@
     <script src="../resources/lib/CSS3DArgonHUD.js"></script>
     <script src="../resources/lib/argon.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+      video{
+        margin: 0;
+        height: 100vh;
+        position: fixed;
+        z-index: -1;
+      }
+    </style>
   </head>
   <body>
+    <video></video>
     <div id="argon">
       <div id="hud">
         <div id="menu" class="menu">
@@ -16,10 +25,7 @@
         </div>
       </div>
       <button id="box-location" class="location">Box Location</button>
-      <div onclick="hideMe(this)" id="description" >
-        <h2>A Simple Geo example</h2>
-        <h5>(click to dismiss)</h5>
-        <p>This example takes the current location of the viewer, and positions a cube a small distance away from where the viewer was positioned when the example was loaded.  We do this by adding a small amount to our current east-west location, in the local Three.js cartesian coordinates.  This illustrates how to create geospatial content based on the current location, and update the internal geospatial location of the object.  It extends the example in part 1 by added 3D HTML content and proper handling of HTML in stereo Viewer Mode.</p>
+      <div>
       </div>
     </div>
   </body>
@@ -27,5 +33,18 @@
 		function hideMe(elem) {
 		    elem.style.display = 'none';
 		}
-	</script>  <script src="./app.js"></script>
+
+        var constraints = { audio: false, video: { } };
+
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function(mediaStream) {
+                var video = document.querySelector('video');
+                video.srcObject = mediaStream;
+                video.onloadedmetadata = function(e) {
+                    video.play();
+                };
+            })
+            .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+	</script>
+    <script src="./app.js"></script>
 </html>
