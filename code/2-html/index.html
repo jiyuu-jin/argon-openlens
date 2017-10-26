@@ -34,7 +34,7 @@
 		    elem.style.display = 'none';
 		}
 
-        var constraints = { audio: false, video: { } };
+        var constraints = { facingMode: { exact: "environment" }, audio: false, video: { } };
 
         navigator.mediaDevices.getUserMedia(constraints)
             .then(function(mediaStream) {
