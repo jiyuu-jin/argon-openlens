@@ -81,27 +81,63 @@ app.context.setDefaultReferenceFrame(app.context.localOriginEastUpSouth);
 // location, until our reality is set and we know the location.  Each time the reality changes, we update
 // the cube position.
 // create a 100m cube with a Buzz texture on it, that we will attach to a geospatial object at Georgia Tech
+
+const createEntity = function(name, lat, long) {
+    var box = new THREE.Object3D;
+    var loader = new THREE.TextureLoader();
+    loader.load('box.png', function (texture) {
+        var geometry = new THREE.BoxGeometry(10, 10, 10);
+        var material = new THREE.MeshBasicMaterial({ map: texture });
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.scale.set(100, 100, 100);
+        box.add(mesh);
+    });
+
+
+    // have our geolocated object start somewhere, in this case
+    // near Georgia Tech in Atlanta.
+    // you should probably adjust this to a spot closer to you
+    // (we found the lon/lat of Georgia Tech using Google Maps)
+    var geoEntity = new Cesium.Entity({
+        name: name,
+        position: Cartesian3.fromDegrees(long, lat),
+        orientation: Cesium.Quaternion.IDENTITY
+    });
+    var geoTarget = new THREE.Object3D;
+    geoTarget.add(box);
+    scene.add(geoTarget);
+}
+
+createEntity('Executive House', 40.258778, -76.879583);
+createEntity('Pinnacle Hospital', 40.258458, -76.879980);
+createEntity('Mulberry Station', 40.258373, -76.877753);
+
 var buzz = new THREE.Object3D;
 var loader = new THREE.TextureLoader();
-loader.load('buzz.png', function (texture) {
+loader.load('box.png', function (texture) {
     var geometry = new THREE.BoxGeometry(10, 10, 10);
     var material = new THREE.MeshBasicMaterial({ map: texture });
     var mesh = new THREE.Mesh(geometry, material);
     mesh.scale.set(100, 100, 100);
     buzz.add(mesh);
 });
+
+
 // have our geolocated object start somewhere, in this case
 // near Georgia Tech in Atlanta.
 // you should probably adjust this to a spot closer to you
 // (we found the lon/lat of Georgia Tech using Google Maps)
-var gatechGeoEntity = new Cesium.Entity({
-    name: "Georgia Tech",
-    position: Cartesian3.fromDegrees(-76.880126, 40.258891),
+var huGeoEntity = new Cesium.Entity({
+    name: "Harrisburg University",
+    position: Cartesian3.fromDegrees(-76.880295, 40.261811),
     orientation: Cesium.Quaternion.IDENTITY
 });
-var gatechGeoTarget = new THREE.Object3D;
-gatechGeoTarget.add(buzz);
-scene.add(gatechGeoTarget);
+var huGeoTarget = new THREE.Object3D;
+huGeoTarget.add(buzz);
+scene.add(huGeoTarget);
+
+
+
 // create a 1m cube with a wooden box texture on it, that we will attach to the geospatial object when we create it
 // Box texture from https://www.flickr.com/photos/photoshoproadmap/8640003215/sizes/l/in/photostream/
 //, licensed under https://creativecommons.org/licenses/by/2.0/legalcode
@@ -195,15 +231,15 @@ app.updateEvent.addEventListener(function (frame) {
         boxGeoObject.quaternion.copy(boxPose.orientation);
     }
     // get the local coordinates of the GT box, and set the THREE object
-    var geoPose = app.context.getEntityPose(gatechGeoEntity);
+    var geoPose = app.context.getEntityPose(huGeoEntity);
     if (geoPose.poseStatus & Argon.PoseStatus.KNOWN) {
-        gatechGeoTarget.position.copy(geoPose.position);
+        huGeoTarget.position.copy(geoPose.position);
     }
     else {
         // initialize to a fixed location in case we can't convert to geospatial
-        gatechGeoTarget.position.y = 0;
-        gatechGeoTarget.position.z = -4000;
-        gatechGeoTarget.position.x = 1000;
+        huGeoTarget.position.y = 0;
+        huGeoTarget.position.z = -4000;
+        huGeoTarget.position.x = 1000;
     }
     // rotate the boxes at a constant speed, independent of frame rates
     // to make it a little less boring
@@ -253,7 +289,7 @@ app.updateEvent.addEventListener(function (frame) {
             ];
         }
     }
-    infoText += " distance to lit; fam @ GT (" + toFixed(distanceToBuzz, 2) + ")<br>";
+    infoText += " distance to HU (" + toFixed(distanceToBuzz, 2) + ")<br>";
     infoText += "box is " + toFixed(distanceToBox, 2) + " meters away";
     var boxLabelText;
     if (boxPoseFIXED.poseStatus & Argon.PoseStatus.KNOWN) {
@@ -261,7 +297,7 @@ app.updateEvent.addEventListener(function (frame) {
         boxLabelText += toFixed(boxCartographicDeg[1], 6) + ", " + toFixed(boxCartographicDeg[2], 2) + "";
     }
     else {
-        boxLabelText = "suhhhh dude!<br>Location unknown";
+        boxLabelText = "suhhhh dude!";
     }
     if (lastInfoText !== infoText) {
         locationElements[0].innerHTML = infoText;
